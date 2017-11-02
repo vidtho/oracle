@@ -1,3 +1,7 @@
+-===============================================================================================================================================
+' With statement [Tree structured]....Values of pass_1 gets passed to pass_2 => pass_3 => pass_4 => final query gets all the values from pass_4
+-===============================================================================================================================================
+
 WITH pass_1 AS
  (Select distinct dic.VALUATION_DATE,dic.pol_id,iss_DATE dpt_date,iss_date, g_EFF_DT,g_TERM,
       case 
@@ -71,3 +75,20 @@ WITH pass_1 AS
 /*SELECT a.pol_id, iss_date, g_eff_dt, anni_dt, valuation_date, anni_val_dt, start_dt, end_dt,
 g_term,  term, valdt_term, min_g_cred_rate, rate,
 g_tier, tier_cnt, expstatus, tot_expiry, excpt_dt, excpt_flag  FROM pass_4 a*/
+
+
+-=====================================================
+' With statement [multiple named queries]....
+-=====================================================
+
+insert into acrs select  z.* from (
+      with 
+        gather_data AS ( select a, b, c , d  from acfd a where a.a = 1 and a.b = 100 ) , 
+	expected AS ( select count(*) cnt, p, q, r, s from gd GROUP BY p,q,r,s ) ,
+        actual AS  ( select count(*) cnt, x, y, z from acr GROUP BY x,y,z )
+      select b, c, d, p, q, y, z , sysdate ,  user
+        from gather_data a , expected b ,  actual c
+       where a.a = b.p(+)
+         and c.x = b.p(+)
+         and a.a = c.x
+         ) z;
