@@ -92,3 +92,17 @@ insert into acrs select  z.* from (
          and c.x = b.p(+)
          and a.a = c.x
          ) z;
+
+-=====================================================
+'  With statement [Tree structured].... Simplified
+-=====================================================
+with pass_1 as 
+   (select .... from emp, dept WHERE ..... ),  
+	pass_2 as ( select a.*,......from pass_1 a , comm c where 1=1  and c.emp_id = a.empid  ) , 
+	pass_3 as ( select a.*,......from pass_2 a  where 1=1 ) , 
+	pass_4 as ( select a.*,......from pass_3 a , comm c where 1=1  and c.emp_id = a.empid  ) ,
+	pass_5 as ( select a.*, .....from pass_4 a , comm c where 1=1  and c.emp_id = a.empid  ) , 
+	pass_6 as ( select a.*,......from pass_5 a  where 1=1 ) , 
+	pass_7 as ( select a.*,......from pass_6 a  where 1=1 ) , 
+	pass_8 as ( select a.*,......from pass_7 a  where 1=1 ) 
+ select a.* from pass_8 a) b
